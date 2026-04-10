@@ -110,9 +110,19 @@ def load_data():
     return train, prospects, preds
 
 
+def normalize_damage_column(df):
+    damage_map = {"no": 0, "oui": 1, 0: 0, 1: 1}
+    normalized = df["vehicule_endommage"].map(damage_map)
+    df["vehicule_endommage"] = normalized.astype("Int64")
+    return df
+
+
 def prepare_data(train_df, prospects_df, preds_df):
     train = train_df.copy()
     prospects = prospects_df.copy()
+
+    train = normalize_damage_column(train)
+    prospects = normalize_damage_column(prospects)
 
     if preds_df is not None:
         prospects = prospects.merge(preds_df, on="id_client", how="left")
