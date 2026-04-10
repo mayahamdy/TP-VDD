@@ -325,9 +325,8 @@ avg_premium = train_df["prime_annuelle"].mean()
 st.markdown(
     f"""
     <div class="hero">
-        <h1>Ciblage client : raconter l'histoire derrière les données</h1>
+        <h1>Ciblage client </h1>
         <p>Cette application suit un fil simple : d'abord comprendre qui sont les clients, ensuite repérer les signaux liés à la réponse positive, puis transformer cette lecture en une liste de contacts priorisés.</p>
-        <p>Le ton est volontairement narratif : chaque graphique répond à une question métier claire, avec des mesures visibles et des repères faciles à interpréter.</p>
     </div>
     """,
     unsafe_allow_html=True,
@@ -347,15 +346,15 @@ with st.sidebar:
     top_n = st.slider("Nombre de clients prioritaires à afficher", 10, 100, 20, 10)
 
 tab1, tab2, tab3, tab4 = st.tabs(
-    ["Le décor", "Ce qui influence la réponse", "Le modèle raconte quoi ?", "Passage à l'action"]
+    ["Le contexte", "Ce qui influence la réponse", "Le modèle raconte quoi ?", "Passage à l'action"]
 )
 
 with tab1:
-    st.markdown('<h2 class="section-title">Le décor</h2>', unsafe_allow_html=True)
+    st.markdown('<h2 class="section-title">Le contexte</h2>', unsafe_allow_html=True)
     st.markdown(
         """
         <div class="story-box">
-        Avant de prédire quoi que ce soit, il faut comprendre le terrain. Ici, on dispose d'un grand historique de clients déjà observés et d'un second fichier de prospects à classer. Cette première section donne le contexte général : taille des données, qualité et composition globale.
+        Avant de prédire quoi que ce soit, il faut comprendre le contexte. Ici, on dispose d'un historique de clients déjà observés et d'un second fichier de prospects à classer. Cette première section donne le contexte général : taille des données, qualité et composition globale.
         </div>
         """,
         unsafe_allow_html=True,
@@ -369,7 +368,7 @@ with tab1:
     with c3:
         metric_card("Taux de réponse positive", f"{response_rate:.1%}", "Proportion de clients positifs dans le fichier d'entraînement.")
     with c4:
-        metric_card("Valeurs manquantes", str(missing_total), "Le jeu est très propre sur ce point.")
+        metric_card("Valeurs manquantes", str(missing_total), "Il n'y a pas de valeurs manquantes.")
 
     left, right = st.columns([1.1, 1])
     with left:
@@ -378,7 +377,7 @@ with tab1:
         st.markdown(
             """
             <div class="story-box">
-            <b>Lecture rapide :</b> la classe positive est minoritaire. Cela veut dire qu'un modèle naïf pourrait facilement dire "non" presque tout le temps. Il faut donc lire les performances avec soin et s'intéresser à la capacité du modèle à retrouver les clients réellement intéressés.
+            <b>Lecture rapide :</b> la classe positive est minoritaire. Cela veut dire qu'un modèle naïf pourrait facilement dire "non" presque tout le temps. Il faut donc lire les performances et s'intéresser à la capacité du modèle à retrouver les clients réellement intéressés.
             </div>
             """,
             unsafe_allow_html=True,
@@ -400,7 +399,7 @@ with tab2:
     st.markdown(
         """
         <div class="story-box">
-        Cette partie cherche les signaux les plus parlants. L'idée est simple : comparer les groupes de clients et voir où le taux de réponse monte vraiment. On ne cherche pas encore à conclure causalement, mais à identifier des profils prometteurs.
+        Cette partie cherche les signaux les plus parlants. L'idée : comparer les groupes de clients et voir où le taux de réponse monte vraiment. On cherche à identifier des profils prometteurs.
         </div>
         """,
         unsafe_allow_html=True,
@@ -456,14 +455,14 @@ with tab3:
     st.markdown(
         """
         <div class="story-box">
-        Une fois le modèle entraîné, l'information la plus intéressante n'est pas seulement la classe 0 ou 1, mais surtout la <b>probabilité</b> attribuée à chaque prospect. C'est cette note qui permet ensuite d'organiser la prise de contact.
+        Une fois le modèle entraîné, l'information la plus intéressante n'est pas seulement la classe 0 ou 1, mais surtout la probabilité attribuée à chaque prospect. C'est cette note qui permet ensuite d'organiser la prise de contact.
         </div>
         """,
         unsafe_allow_html=True,
     )
 
     if preds_df is None or "proba_reponse" not in prospects_df.columns:
-        st.warning("Le fichier de prédictions n'a pas été trouvé. Lance d'abord le notebook pour générer `predictions_clients_a_contacter.csv`.")
+        st.warning("Le fichier de prédictions n'a pas été trouvé. Lancez d'abord le notebook pour générer `predictions_clients_a_contacter.csv`.")
     else:
         col1, col2, col3 = st.columns(3)
         with col1:
@@ -514,7 +513,7 @@ with tab4:
     st.markdown(
         """
         <div class="story-box">
-        La dernière étape traduit l'analyse en action. L'objectif n'est pas seulement de produire un score, mais de donner une liste claire de clients à cibler et une justification simple à présenter dans un rendu ou à l'oral.
+        La dernière étape traduit l'analyse en action. L'objectif est de donner une liste de clients à cibler avec justifications.
         </div>
         """,
         unsafe_allow_html=True,
@@ -559,7 +558,7 @@ with tab4:
         st.markdown(
             """
             <div class="story-box">
-            <b>Recommandation finale :</b> commencer par les profils en <b>haute priorité</b>, puis élargir si besoin à la <b>priorité intermédiaire</b>. Cette logique permet d'éviter un ciblage trop large et de concentrer l'effort commercial sur les profils les plus crédibles.
+            <b>Recommandation finale :</b> commencer par les profils en haute priorité, puis élargir si besoin à la priorité intermédiaire. Cette logique permet d'éviter un ciblage trop large.
             </div>
             """,
             unsafe_allow_html=True,
